@@ -5,7 +5,7 @@ from relationship_app.models import Book, Author, Library, Librarian
 
 def query_books_by_author(author_name):
     """Query all books by a specific author."""
-    author = get_object_or_404(Author, name=author_name)
+    author = Author.objects.get(name=author_name)
     books = Book.objects.filter(author=author)
     print(f"Books by {author.name}:")
     for book in books:
@@ -24,7 +24,7 @@ def list_all_books_in_library(library_name):
 
 def retrieve_librarian_for_library(library_name):
     """Retrieve the librarian for a specific library."""
-    library = get_object_or_404(Library, name=library_name)
+    library = Librarian.objects.get(Library, name=library_name)
     librarian = library.librarian  # ForeignKey relationship
     print(f"The librarian for {library.name} Library is {librarian.name}")
     return librarian
