@@ -24,7 +24,7 @@ def list_all_books_in_library(library_name):
 
 def retrieve_librarian_for_library(library_name):
     """Retrieve the librarian for a specific library."""
-    library = Librarian.objects.get(Library, library=library_name)
+    library = Librarian.objects.get(library=library_name)
     librarian = library.librarian  # ForeignKey relationship
     print(f"The librarian for {library.name} Library is {librarian.name}")
     return librarian
