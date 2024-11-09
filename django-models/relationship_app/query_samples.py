@@ -8,13 +8,18 @@ def query_books_by_author(author_name):
     author = get_object_or_404(Author, name=author_name)
     books = Book.objects.filter(author=author)
     print(f"Books by {author.name}:")
-   
+    for book in books:
+        print(f"- {book.title}")
+    return books
 
 def list_all_books_in_library(library_name):
     """List all books in a specific library."""
-    library = get_object_or_404(Library, name=library_name)
+    library = Library.objects.get(name=library_name)
     books = library.books.all()  # Many-to-Many relationship
     print(f"Books in {library.name} Library:")
+    for book in books:
+        print(f"- {book.title} by {book.author.name}")
+    return books
     
 
 def retrieve_librarian_for_library(library_name):
