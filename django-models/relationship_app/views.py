@@ -34,20 +34,21 @@ class Registation(CreateView):
      template_name = 'relationship_app/register.html'
 
 def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'admin'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+
 @user_passes_test(is_admin)
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
 def is_librarian(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'librarian'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarians'
 
 @user_passes_test(is_librarian)
 def library_view(request):
     return render(request, 'relationship_app/library_view.html')
 
 def is_member(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'member'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Members'
 
 @user_passes_test(is_member)
 def member_view(request):
