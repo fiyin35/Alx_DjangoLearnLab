@@ -16,6 +16,16 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
+    class Meta:
+        permisions = [
+            ("can_add_book", "Can add a book"),
+            ("can_edit_book", "Can edit a book"),
+            ("can_delete_book", "Can delete a book"),
+        ]
+
+
+        
+
 class Library(models.Model):
     name = models.CharField(max_length=255)
     books = models.ManyToManyField(Book)
