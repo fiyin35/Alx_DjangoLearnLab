@@ -1,6 +1,5 @@
 # relationship_app/query_samples.py
 
-from django.shortcuts import get_object_or_404
 from relationship_app.models import Book, Author, Library, Librarian
 
 def query_books_by_author(author_name):
@@ -15,7 +14,7 @@ def query_books_by_author(author_name):
 def list_all_books_in_library(library_name):
     """List all books in a specific library."""
     library = Library.objects.get(name=library_name)
-    books = library.books.all()  # Many-to-Many relationship
+    books = library.books.all()  
     print(f"Books in {library.name} Library:")
     for book in books:
         print(f"- {book.title} by {book.author.name}")
