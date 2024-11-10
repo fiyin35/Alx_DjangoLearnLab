@@ -31,9 +31,18 @@ class LibraryDetailView(DetailView):
           return context
 
 class Registation(CreateView):
-     form_class = UserCreationForm
-     success_url = reverse_lazy('login')
-     template_name = 'relationship_app/register.html'
+     
+     def register(request):
+        form = UserCreationForm() if request.method == "GET" else UserCreationForm(request.POST)
+        # Handle form submission
+        if request.method == "POST" and form.is_valid():
+            user = form.save()
+            login(request, user)  # Log in the new user automatically after registration
+            return redirect(reverse_lazy('login'))  # Redirect to login page
+        return render(request, 'relationship_app/register.html', {'form': form})
+         
+     
+         
 
 def is_admin(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
