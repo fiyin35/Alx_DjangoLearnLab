@@ -45,7 +45,7 @@ def is_librarian(user):
 
 @user_passes_test(is_librarian)
 def library_view(request):
-    return render(request, 'relationship_app/library_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
 def is_member(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Members'
