@@ -65,7 +65,7 @@ def add_book_view(request):
             return redirect('list-book')
     else:
         form = BookForm()
-    return render(request, 'relationship_app/add_book.html', {'form': form})
+    return render(request, 'relationship_app/add_book.html', {'book': book})
 
 @permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book_view(request, book_id):
@@ -80,11 +80,16 @@ def edit_book_view(request, book_id):
     else:
         """initialize the form with the current book instance for GET request"""
         form = BookForm(instance=book)
-    return render(request, 'relationship_app/edit_book.html', {'form': form})
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
 
 @permission_required('relationship_app.can_delete_book', raise_exception=True)
-def delete_book_view(request):
-    pass
+def delete_book_view(request, book_id):
+    book = Book.get_object_or_404(Book, id=book_id)
+
+    if request.method == 'POST':
+        book.delete()
+        return redirect('list-book')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
 
 
 
