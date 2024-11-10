@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView, CreateView
 from .models import Library
 from .models import Book
+from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
