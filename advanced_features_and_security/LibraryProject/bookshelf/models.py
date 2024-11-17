@@ -12,7 +12,7 @@ class Book(models.Model):
         permissions = [
             ('can_view', ' can view'),
             ('can_create', ' can create'),
-            ('can_edit', ' can edit')
+            ('can_edit', ' can edit'),
             ('can_delete', ' can delete')
         ]
 
