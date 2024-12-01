@@ -5,6 +5,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import filters  
+
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django_filters import rest_framework as filters 
@@ -23,7 +25,7 @@ class BookFilter(filters.FilterSet):
 class BookListView(generics.ListAPIView):
     '''retrieve all the books stored in the database'''
     queryset = Book.objects.all()
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['title', 'publication_year']  # Specify ordering fields
     ordering = ['title']  # Default ordering (optional)
     filterset_class = BookFilter
