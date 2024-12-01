@@ -6,27 +6,28 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+
+from django_filters import rest_framework as filters 
+
+class BookFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains')  # Allows case-insensitive partial matches
+    author = filters.CharFilter(field_name='author__name', lookup_expr='icontains')
+    publication_year = filters.NumberFilter()
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
 
 
 # Create your views here.
 class BookListView(generics.ListAPIView):
     '''retrieve all the books stored in the database'''
     queryset = Book.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = BookFilter
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-
-     # Add filtering, search, and ordering backends
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-
-    # Define filter fields for exact filtering
-    filterset_fields = ['title', 'author', 'publication_year']
-
-    # Define fields for search functionality
-    search_fields = ['title', 'author__name']
-
-    # Define fields for ordering
-    ordering_fields = ['title', 'publication_year']
-    ordering = ['title']  # Default ordering
     
 
 class BookDetailView(generics.RetrieveAPIView):
