@@ -10,7 +10,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     # function to validate the publication year to ensure it's not above the current year
     # which means publication_year can not be set to future date
-    def publication_year_validation(self, value):
+    def validate_publication_year(self, value):
         current_year = datetime.date.today().year
 
         if value > current_year:
@@ -24,4 +24,4 @@ class AuthorSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True, read_only=True)
     class Meta:
         model = Author
-        field = ['author']
+        fields = ['name', 'books']
