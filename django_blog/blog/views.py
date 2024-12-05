@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .models import Post
@@ -40,7 +40,7 @@ class PostCreateView(CreateView, LoginRequiredMixin):
                 return super().form_valid(form)
         
 # update view - author can update post
-class PostUpdateView(UpdateView, LoginRequiredMixin):
+class PostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
         model = Post
         form_class = PostForm
         template_name = 'blog/post_update.html'
@@ -50,7 +50,7 @@ class PostUpdateView(UpdateView, LoginRequiredMixin):
                 return self.request.user == post.author # ensure only author can update
 
 
-class PostDeleteView(DeleteView, LoginRequiredMixin):
+class PostDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
         model = Post
         template_name = 'blog/post_delete.html'
         success_url = reverse_lazy('blog:post_list') 
