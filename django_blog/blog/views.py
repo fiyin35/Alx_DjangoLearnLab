@@ -80,7 +80,7 @@ def profile(request):
 
 # comments views go here
 @login_required
-def commentCreateView(request, post_id):
+def CommentCreateView(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -95,7 +95,7 @@ def commentCreateView(request, post_id):
     return render(request, 'blog/comment_add.html', {'form': form})
 
 @login_required
-def commentUpdateView(request, comment_id):
+def CommentUpdateView(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
@@ -108,7 +108,7 @@ def commentUpdateView(request, comment_id):
 
 
 @login_required
-def commentDeleteView(request, comment_id):
+def CommentDeleteView(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     if request.method == 'POST':
         comment.delete()
