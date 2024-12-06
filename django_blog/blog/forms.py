@@ -21,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     tags = forms.CharField(
         required=False,
-        widget=TagWidget(attrs={'placeholder': 'Enter tags separated by commas'}),
+        widget=TagWidget(),
         help_text = 'Enter tags separated by commas'
     )
     class Meta:
