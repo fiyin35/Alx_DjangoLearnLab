@@ -18,14 +18,27 @@ class CustomUserCreationForm(UserCreationForm):
         return user
     
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(
+        require=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter tags separated by commas'}),
+        help_text = 'Enter tags separated by commas'
+    )
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter post title'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Write your post content'})
         }
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        tags = self.cleaned_data['tags']
+        if commit:
+            instance.save()
+            instance.tags.set(*[tag.strip() for tag in tags.split(',') if tag.strip()])
+        return instance
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
