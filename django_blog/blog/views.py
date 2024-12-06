@@ -4,11 +4,11 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CommentForm
 
 
 # Create your views here.
@@ -29,7 +29,7 @@ class PostListView(ListView):
 class PostDetailView(DetailView, LoginRequiredMixin):
         model = Post
         template_name = 'blog/post_detail.html'
-class PostCreateView(CreateView, LoginRequiredMixin):
+class PostCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
         model = Post
         form_class = PostForm
         template_name = 'blog/post_create.html'
@@ -71,4 +71,42 @@ def profile(request):
         return render(request, 'blog/profile.html', {'form': form})
 
 
+# comments views go here
 
+class CommentCreateView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+        model = Comment
+        form_class = CommentForm
+
+        template_name = 'blog/post_detail.html'
+
+        def form_valid(self, form):
+                # automatically set post author to login user
+                form.instance.author = self.request.user
+                return super().form_valid(form)
+
+class CommentUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+        model = Comment
+        form_class = CommentForm
+        template_name = 'blog/post_detail.html'
+
+        def test_func(self):
+                comment = self.get_object()
+                return self.request.user == comment.author
+
+class CommentDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+        model = Comment
+        template_name = 'blog/post_detail.html'
+
+        def test_func(self):
+                comment = self.get_object()
+                return self.request.user == comment.author
+
+class CommentViewAll(ListView, LoginRequiredMixin):
+        #referencing the Comment in model
+        model = Comment
+        # path to the html template
+        template_name = 'blog/post_detail.html'
+        # rename the object name, usable in the html template
+        context_object_name = 'comments'
+        # order by latest post
+        ordering = ['-created_at']
