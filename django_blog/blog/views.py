@@ -117,7 +117,7 @@ def CommentDeleteView(request, comment_id):
         return redirect('post_detail', pk=comment.post.id)
     return render(request, 'blog/comment_delete.html', {'comment': comment})
 
-def posts_by_tag(request, tag):
+def PostByTagListView(request, tag):
     # Retrieve the tag object
     tag_obj = get_object_or_404(Tag, name=tag)
     # Filter posts associated with the tag
