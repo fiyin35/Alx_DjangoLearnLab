@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.db.models import Q
+from taggit.models import Tag
 from .models import Post, Comment
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView
 
@@ -114,6 +116,25 @@ def CommentDeleteView(request, comment_id):
         comment.delete()
         return redirect('post_detail', pk=comment.post.id)
     return render(request, 'blog/comment_delete.html', {'comment': comment})
+
+def posts_by_tag(request, tag):
+    # Retrieve the tag object
+    tag_obj = get_object_or_404(Tag, name=tag)
+    # Filter posts associated with the tag
+    posts = Post.objects.filter(tags__in=[tag_obj])
+    return render(request, 'blog/tag_posts.html', {'tag': tag, 'posts': posts})
+
+def post_search(request):
+      query = request.GET.get('q')
+      results = Post.objects.none()
+
+
+      if query:
+            results = Post.objects.filter(
+                  Q(title__icontains=query) | Q(content__icontains=query | Q(tags__icontains=query))
+            ).distinct()
+      return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+      
 
 # class CommentUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
 #         model = Comment

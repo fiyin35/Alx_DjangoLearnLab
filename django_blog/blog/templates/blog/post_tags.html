@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %} {% block content %}
+<h2>Posts Tagged "{{ tag }}"</h2>
+{% if posts %}
+<ul>
+  {% for post in posts %}
+  <li><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No posts found with this tag.</p>
+{% endif %} {% endblock %}
