@@ -131,7 +131,7 @@ def post_search(request):
 
       if query:
             results = Post.objects.filter(
-                  Q(title__icontains=query) | Q(content__icontains=query | Q(tags__icontains=query))
+                  Q(title__icontains=query) | Q(content__icontains=query | Q(tags__name__icontains=query))
             ).distinct()
       return render(request, 'blog/search_results.html', {'query': query, 'results': results})
       
