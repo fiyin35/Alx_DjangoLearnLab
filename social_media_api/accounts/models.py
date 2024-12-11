@@ -5,8 +5,8 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)
-    password = models.CharField(max_length=50, null=False, blank=False)
-    bio = models.CharField(max_length=255)
+    password = models.TextField(max_length=50, null=False, blank=False)
+    bio = models.TextField(max_length=255)
     profile_picture = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
     followers = models.ManyToManyField('self', symmetrical=False)
 
