@@ -28,7 +28,7 @@ class CommentViewSets(viewsets.ModelViewSet):
 
 # Posts views here
 class PostViewSets(viewsets.ModelViewSet):
-    model = Comment.objects.all()
+    model = Post.objects.all()
     authentication_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     serializer_class = PostSerializer
 
