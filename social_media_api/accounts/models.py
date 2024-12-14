@@ -12,3 +12,4 @@ class CustomUser(AbstractUser):
 
     def __self__(self):
         return self.bio
+

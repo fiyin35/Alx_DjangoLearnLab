@@ -1,0 +1,8 @@
+<h1>Confirm Deletion</h1>
+<p>Are you sure you want to delete post?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, delete this post</button>
+  <a href="{% url 'post_list' %}">Cancel</a>
+</form>

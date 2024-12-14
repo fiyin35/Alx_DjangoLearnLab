@@ -22,14 +22,18 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        token = Token.objects_or_create(user=user)
+        """This method tries to fetch the 
+        Token associated with the specified user. 
+        If it does not exist, it creates a new 
+        Token for the user"""
+        token, created = Token.objects.get_or_create(user=user)
 
-        return Response({'token': token.key, 'user': UserSerializer(user).data})
+        return Response({'token': token.key, 'user': UserSerializer(user).data, 'created': created})
     
 class ProfileView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [IsAuthenticated]
-    serializer = UserSerializer
+    serializer_class = UserSerializer
 
     
 

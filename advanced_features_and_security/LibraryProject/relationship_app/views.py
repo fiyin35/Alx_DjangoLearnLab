@@ -13,7 +13,7 @@ from .models import UserProfile
 from .forms import BookForm
 
 
-# Create your views here.
+# Create your views here. 
 def book_list(request):
     """lists all books stored in the database"""
     books = Book.objects.all()
