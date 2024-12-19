@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Comment, Post
 from .serializers import CommentSerializer, PostSerializer
 
@@ -35,3 +37,16 @@ class PostViewSets(viewsets.ModelViewSet):
     def savePost(self, serializer):
         # set the author of the post to the logged user
         serializer.save(author=self.request.user)
+
+
+# Feeds 
+class FeedView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_feed(self, request):
+        followed_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+
