@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework import status
@@ -57,7 +57,8 @@ class LikePostView(APIView):
 
     def post(self, request, post_id):
         try:
-            post = Post.objects.get(id=post_id)
+            post = get_object_or_404(Post, id=post_id)
+            #post = get_object_or_404(Post, pk=pk)
         except post.DoesNotExist:
             return Response({'detail': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
         # check if the user like the post 
@@ -82,7 +83,8 @@ class UnlikePostView(APIView):
 
     def delete(self, request, post_id):
         try:
-            post = Post.objects.get(id=post_id)
+            #post = Post.objects.get(id=post_id)
+            post = get_object_or_404(Post, id=post_id)
         except Post.DoesNotExist:
             return Response({'detail':'post not found'}, status=status.HTTP_404_NOT_FOUND)
         
