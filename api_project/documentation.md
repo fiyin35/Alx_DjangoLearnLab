@@ -38,3 +38,7 @@ REST_FRAMEWORK = {
 ## when an endpoint returned 404 not found check the urls.py and urlpatterns for the trailing /
 
 ## e.g path('profile', profile.as_view(), name='proffile') ensure you add 'profile/'
+
+# set git global congif
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
